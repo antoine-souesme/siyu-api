@@ -15,7 +15,11 @@ async function bootstrap() {
         .setVersion('0.1')
         .build();
 
-    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    const documentFactory = () => SwaggerModule.createDocument(app, config, {
+        extraModels: [
+            /* Add extra models if needed here */
+        ],
+    });
 
     SwaggerModule.setup('api', app, documentFactory);
 
