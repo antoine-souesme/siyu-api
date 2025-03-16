@@ -2,6 +2,7 @@ import { CreateUserDto } from '@/features/users/dtos/create-user.dto';
 import { User } from '@/features/users/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -19,8 +20,10 @@ export class UsersService {
         return saved;
     }
 
-    async find() {
-        const users = await this.userRepository.find();
+    async find(
+        options: IPaginationOptions,
+    ) {
+        const users = paginate<User>(this.userRepository, options);
         return users;
     }
 

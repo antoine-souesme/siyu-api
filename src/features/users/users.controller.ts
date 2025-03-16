@@ -1,6 +1,6 @@
 import { CreateUserDto } from '@/features/users/dtos/create-user.dto';
 import { UsersService } from '@/features/users/users.service';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -17,8 +17,15 @@ export class UsersController {
     }
 
     @Get()
-    find() {
-        return this.usersService.find();
+    find(
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+        @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+    ) {
+        return this.usersService.find({
+            page,
+            limit,
+            route: '/users',
+        });
     }
 
 }
