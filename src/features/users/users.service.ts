@@ -19,4 +19,9 @@ export class UsersService {
         return saved;
     }
 
+    async find() {
+        const users = await this.userRepository.find();
+        return users;
+    }
+
 }
