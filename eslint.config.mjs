@@ -29,11 +29,13 @@ export default tseslint.config(
             '@typescript-eslint/no-floating-promises': 'off',
             '@typescript-eslint/no-unsafe-argument': 'warn',
 
+
             "indent": [
                 "error",
                 4,
                 {
                     "SwitchCase": 1,
+                    'ignoredNodes': ['PropertyDefinition'],
                 },
             ],
             "semi": [

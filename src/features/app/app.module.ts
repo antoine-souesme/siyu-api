@@ -1,7 +1,8 @@
+import { AppController } from '@/features/app/app.controller';
+import { AppService } from '@/features/app/app.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { UsersModule } from '../users/users.module';
 
 @Module({
     imports: [
@@ -12,14 +13,19 @@ import { AppService } from './app.service';
             username: 'root',
             password: 'root',
             database: 'siyu',
-            entities: [],
+            autoLoadEntities: true,
             migrations: [],
 
             // FIXME: Remove in production
             synchronize: true,
         }),
+        UsersModule,
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    controllers: [
+        AppController,
+    ],
+    providers: [
+        AppService,
+    ],
 })
-export class AppModule {}
+export class AppModule { }
