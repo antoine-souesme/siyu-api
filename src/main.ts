@@ -3,6 +3,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './features/app/app.module';
 
 async function bootstrap() {
+
+    //>────────────────────────────────────────────────────────────────────────────────────────────────<
+    //> Application                                                                                    <
+    //>────────────────────────────────────────────────────────────────────────────────────────────────<
+
     const app = await NestFactory.create(AppModule);
 
     //>────────────────────────────────────────────────────────────────────────────────────────────────<
@@ -22,6 +27,20 @@ async function bootstrap() {
     });
 
     SwaggerModule.setup('api', app, documentFactory);
+
+    //>────────────────────────────────────────────────────────────────────────────────────────────────<
+    //> CORS                                                                                           <
+    //>────────────────────────────────────────────────────────────────────────────────────────────────<
+
+    app.enableCors({
+        origin: [
+            // Local vite dev server
+            'http://localhost:5173',
+
+            // Local dev server when launching with capacitor run
+            'http://192.168.1.69:8100',
+        ],
+    });
 
     //>────────────────────────────────────────────────────────────────────────────────────────────────<
     //> Launch application                                                                             <
