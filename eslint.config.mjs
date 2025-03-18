@@ -34,6 +34,7 @@ export default tseslint.config(
                 4,
                 {
                     "SwitchCase": 1,
+                    'ignoredNodes': ['PropertyDefinition'],
                 },
             ],
             "semi": [
