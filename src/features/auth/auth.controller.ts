@@ -4,7 +4,7 @@ import { RegisterDto } from '@/features/auth/dtos/register.dto';
 import { LoginResponse } from '@/features/auth/responses/login.response';
 import { RegisterResponse } from '@/features/auth/responses/register.response';
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +13,7 @@ export class AuthController {
     ) { }
 
     @Post('register')
-    @ApiResponse({ type: RegisterResponse })
+    @ApiOkResponse({ type: RegisterResponse })
     register(
         @Body() body: RegisterDto,
     ): Promise<RegisterResponse> {
@@ -21,7 +21,7 @@ export class AuthController {
     }
 
     @Post('login')
-    @ApiResponse({ type: LoginResponse })
+    @ApiOkResponse({ type: LoginResponse })
     login(
         @Body() body: LoginDto,
     ): Promise<LoginResponse> {

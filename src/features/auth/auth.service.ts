@@ -62,6 +62,7 @@ export class AuthService {
         // Generate the token
         const signed = this.sign(user);
 
+        // Return the jwt
         return signed;
     }
 
