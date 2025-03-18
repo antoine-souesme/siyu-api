@@ -2,6 +2,7 @@ import { AuthService } from '@/features/auth/auth.service';
 import { LoginDto } from '@/features/auth/dtos/login.dto';
 import { RegisterDto } from '@/features/auth/dtos/register.dto';
 import { LoginResponse } from '@/features/auth/responses/login.response';
+import { RegisterResponse } from '@/features/auth/responses/register.response';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 
@@ -14,7 +15,7 @@ export class AuthController {
     @Post('register')
     register(
         @Body() body: RegisterDto,
-    ) {
+    ): Promise<RegisterResponse> {
         return this.authService.register(body);
     }
 

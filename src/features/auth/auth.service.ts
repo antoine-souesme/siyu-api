@@ -2,6 +2,7 @@ import { email } from '@/constants/regex';
 import { LoginDto } from '@/features/auth/dtos/login.dto';
 import { RegisterDto } from '@/features/auth/dtos/register.dto';
 import { LoginResponse } from '@/features/auth/responses/login.response';
+import { RegisterResponse } from '@/features/auth/responses/register.response';
 import { User } from '@/features/users/user.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -19,7 +20,7 @@ export class AuthService {
 
     async register(
         dto: RegisterDto,
-    ) {
+    ): Promise<RegisterResponse> {
 
         // Check if the email is correctly formatted
         if (!email.test(dto.email)) {
@@ -57,11 +58,16 @@ export class AuthService {
         await this.userRepository.save(user);
 
         // TODO: Send confirmation email
+
+        // Generate the token
+        const signed = this.sign(user);
+
+        return signed;
     }
 
     async login(
         dto: LoginDto,
-    ): Promise<LoginResponse>  {
+    ): Promise<LoginResponse> {
 
         // Find the user by email
         const found = await this.userRepository.findOne({
@@ -82,10 +88,20 @@ export class AuthService {
         }
 
         // Generate the token
+        const signed = this.sign(found);
+
+        // Return the jwt
+        return signed;
+    }
+
+    sign(
+        user: User,
+    ) {
+
         const payload = {
-            sub: found.id,
-            email: found.email,
-            displayName: found.displayName,
+            sub: user.id,
+            email: user.email,
+            displayName: user.displayName,
         };
 
         const signed = this.jwtService.sign(payload);
@@ -93,6 +109,5 @@ export class AuthService {
         return {
             accessToken: signed,
         };
-
     }
 }
