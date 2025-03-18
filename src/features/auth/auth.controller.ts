@@ -13,6 +13,7 @@ export class AuthController {
     ) { }
 
     @Post('register')
+    @ApiResponse({ type: RegisterResponse })
     register(
         @Body() body: RegisterDto,
     ): Promise<RegisterResponse> {
