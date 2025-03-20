@@ -4,6 +4,7 @@ import { RegisterDto } from '@/features/auth/dtos/register.dto';
 import { LoginResponse } from '@/features/auth/responses/login.response';
 import { RegisterResponse } from '@/features/auth/responses/register.response';
 import { User } from '@/features/users/user.entity';
+import { ApiErrorCodes } from '@/utils/errors';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -24,7 +25,7 @@ export class AuthService {
 
         // Check if the email is correctly formatted
         if (!email.test(dto.email)) {
-            throw new BadRequestException('register.email.format');
+            throw new BadRequestException(ApiErrorCodes.RegisterEmailFormat);
         }
 
         // Check if the email is already taken
@@ -35,12 +36,12 @@ export class AuthService {
         });
 
         if (found) {
-            throw new BadRequestException('register.email.taken');
+            throw new BadRequestException(ApiErrorCodes.RegisterEmailTaken);
         }
 
         // Check for the password mismatch
         if (dto.password !== dto.confirmPassword) {
-            throw new BadRequestException('register.password.mismatch');
+            throw new BadRequestException(ApiErrorCodes.RegisterPasswordMismatch);
         }
 
         // Encrypt the password
@@ -78,14 +79,14 @@ export class AuthService {
         });
 
         if (!found) {
-            throw new BadRequestException('login.user.not-found');
+            throw new BadRequestException(ApiErrorCodes.LoginUserNotFound);
         }
 
         // Check password match
         const match = await bcrypt.compare(dto.password, found.password);
 
         if (!match) {
-            throw new BadRequestException('login.password.invalid');
+            throw new BadRequestException(ApiErrorCodes.LoginPasswordInvalid);
         }
 
         // Generate the token
